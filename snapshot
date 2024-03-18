@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This file goes in the .ddev/commands/web/ directory
+
+# Removes previous snapshot and creates a new one.
+rm -rf snapshot
+mkdir snapshot
+echo 'directory created'
+mysqldump --add-drop-table db > snapshot/backdropcms.sql
+echo 'database dumped'
+tar -czf files.tar.gz files
+mv files.tar.gz snapshot/
+echo 'file directory (with config) archived'
