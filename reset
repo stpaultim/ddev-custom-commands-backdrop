@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# This file goes in the .ddev/commands/web/ directory
+
+# Drops all existing tables before import
+mysql --silent --skip-column-names -e "SHOW TABLES" db | xargs -L1 -I% echo 'DROP TABLE `%`;' | mysql -v db
+
+# Imports database
+mysql -u db -pdb db < snapshot/backdropcms.sql
+echo "Database imported successfully."
+
+#Removes old files directory and then replaces it with existing snapshot
+rm -rf files
+cp snapshot/files.tar.gz .
+tar -xzf files.tar.gz
+rm files.tar.gz
+echo 'file directory (with config) restored'
